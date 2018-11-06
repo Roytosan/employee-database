@@ -9,30 +9,44 @@ var config = {
 
   firebase.initializeApp(config);
 
-  var initialBid = 0;
-  var initialBidder = "No one :-(";
-  var highPrice = initialBid;
-  var highBidder = initialBidder;
+  var dataRef = firebase.database();
 
-var employeeName = "No one";
-var role;
-var startDate = new Date(1970, 0, 1);
-var today = Date();
-var oneMonth = 2629800000;
-var monthsWorked = document.write(Math.ceil((today.getTime()-startDate.getTime())/(oneMonth))+)
+var employeeName = "";
+var role = "";
+var startDate = 0;
 var monthlyRate = 0;
-var totalBilled = monthlyRate * monthsWorked;
 
-// Find a <table> element with id="employees":
-var table = document.getElementById("employees");
 
-// Create an empty <tr> element and add it to the 1st position of the table:
-var row = table.insertRow(0);
+ // Capture Button Click
+ $("#submit-data").on("click", function(event) {
+    event.preventDefault();
 
-// Insert new cells (<td> elements) at the 1st and 2nd position of the "new" <tr> element:
-var cell1 = row.insertCell(0);
-var cell2 = row.insertCell(1);
+// YOUR TASK!!!
+// Code in the logic for storing and retrieving the most recent user.
+// Don't forget to provide initial data to your Firebase database.
+    emplyeeName = $("#employee-name").val().trim();
+    role = $("#employee-role").val().trim();
+    startDate = $("#start-date").val().trim();
+    monthlyRate = $("#monthly-rate").val().trim();
 
-// Add some text to the new cells:
-cell1.innerHTML = "NEW CELL1";
-cell2.innerHTML = "NEW CELL2";
+    dataRef.ref().push({
+
+        employeeName: employeeName,
+        role: role,
+        startDate: startDate,
+        monthlyRate: monthlyRate,
+        dateAdded: firebase.database.ServerValue.TIMESTAMP
+      });
+    });
+
+     // Firebase watcher + initial loader HINT: This code behaves similarly to .on("value")
+     dataRef.ref().on("child_added", function(childSnapshot) {
+
+        // Log everything that's coming out of snapshot
+        console.log(childSnapshot.val().employeeName);
+        console.log(childSnapshot.val().role);
+        console.log(childSnapshot.val().startDate);
+        console.log(childSnapshot.val().monthlyRate);
+        console.log(childSnapshot.val().joinDate);
+  
+    });
